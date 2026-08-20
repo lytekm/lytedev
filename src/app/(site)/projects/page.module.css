@@ -1,0 +1,18 @@
+.page {
+  display: grid;
+  gap: 2rem;
+}
+
+.filters {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: start;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+@media (max-width: 720px) {
+  .filters {
+    grid-auto-flow: row;
+  }
+}

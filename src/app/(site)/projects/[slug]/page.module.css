@@ -1,0 +1,54 @@
+.page {
+  display: grid;
+  gap: 2rem;
+}
+
+.hero {
+  display: grid;
+  gap: 1.2rem;
+  align-items: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.copy,
+.visual {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.title {
+  font-size: clamp(2.2rem, 4vw, 3.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.lede {
+  max-width: 62ch;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.visual {
+  position: relative;
+  min-height: 380px;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 10px);
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent),
+    linear-gradient(135deg, rgba(244, 201, 79, 0.08), transparent 55%),
+    var(--panel-strong);
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 1024px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .visual {
+    min-height: 280px;
+  }
+}

@@ -1,0 +1,13 @@
+.setup h1 {
+  font-size: clamp(2.2rem, 4vw, 3.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.setup :global(.card) {
+  background: rgba(16, 16, 16, 0.94);
+}
+
+.shell {
+  min-height: 100vh;
+}

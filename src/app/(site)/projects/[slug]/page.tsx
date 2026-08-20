@@ -4,6 +4,7 @@ import { Markdown } from "@/components/site/markdown";
 import { StatusBadge } from "@/components/site/status-badge";
 import { absoluteUrl } from "@/lib/utils";
 import { getAllProjectSlugs, requireProject } from "@/lib/content/queries";
+import styles from "./page.module.css";
 
 export async function generateStaticParams() {
   const slugs = await getAllProjectSlugs();
@@ -34,15 +35,15 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const project = await requireProject(slug);
 
   return (
-    <article className="shell page-section detail-page">
-      <div className="detail-hero">
-        <div className="detail-hero__copy">
+    <article className={`shell page-section ${styles.page}`}>
+      <div className={styles.hero}>
+        <div className={styles.copy}>
           <div className="card-meta">
             <StatusBadge status={project.status} />
             {project.featured ? <span className="chip">Featured</span> : null}
           </div>
-          <h1>{project.title}</h1>
-          <p className="detail-hero__lede">{project.short_description}</p>
+          <h1 className={styles.title}>{project.title}</h1>
+          <p className={styles.lede}>{project.short_description}</p>
           <div className="tag-row">
             {project.technologies.map((technology) => (
               <span key={technology} className="chip">
@@ -64,7 +65,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           </div>
         </div>
 
-        <div className="detail-hero__visual">
+        <div className={styles.visual}>
           <Image
             src={project.image_url ?? "/branding/lyte-logo.png"}
             alt={`${project.title} visual`}

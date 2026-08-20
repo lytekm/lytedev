@@ -4,6 +4,7 @@ import { EmptyState } from "@/components/site/empty-state";
 import { ProjectCard } from "@/components/site/project-card";
 import { SectionHeading } from "@/components/site/section-heading";
 import { filterProjectsByStatus, getProjectStatuses, getPublishedProjects } from "@/lib/content/queries";
+import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -23,14 +24,14 @@ export default async function ProjectsPage({
   const statuses = getProjectStatuses(allProjects);
 
   return (
-    <section className="shell page-section">
+    <section className={`shell page-section ${styles.page}`}>
       <SectionHeading
         eyebrow="Projects"
         title="Project archive"
         description="A complete archive of published LyteDev projects, with lightweight status filtering and room for deeper technical write-ups on each entry."
       />
 
-      <div className="filter-row" aria-label="Project filters">
+      <div className={styles.filters} aria-label="Project filters">
         {statuses.map((item) => {
           const active = (status ?? "All") === item;
           const href = item === "All" ? "/projects" : `/projects?status=${encodeURIComponent(item)}`;

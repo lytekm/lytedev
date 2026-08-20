@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GITHUB_URL } from "@/lib/constants";
+import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "About",
@@ -32,8 +33,8 @@ const sections = [
 
 export default function AboutPage() {
   return (
-    <section className="shell page-section about-page">
-      <div className="section-heading">
+    <section className={`shell page-section ${styles.page}`}>
+      <div className={`section-heading ${styles.heading}`}>
         <p className="eyebrow">About</p>
         <h1>Kevin Morrison</h1>
         <p className="muted">
@@ -42,16 +43,16 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <div className="about-grid">
+      <div className={styles.grid}>
         {sections.map((section) => (
-          <article key={section.title} className="card about-card">
+          <article key={section.title} className={`card ${styles.card}`}>
             <h2>{section.title}</h2>
             <p className="muted">{section.body}</p>
           </article>
         ))}
       </div>
 
-      <div className="card about-links">
+      <div className={`card ${styles.links}`}>
         <p className="eyebrow">GitHub</p>
         <a href={GITHUB_URL} target="_blank" rel="noreferrer">
           {GITHUB_URL}

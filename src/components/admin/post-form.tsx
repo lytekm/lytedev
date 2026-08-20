@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useMemo, useState } from "react";
+import Link from "next/link";
 import type { PostRow } from "@/lib/supabase/database.types";
 import { joinList, slugify } from "@/lib/utils";
 import { savePostAction } from "@/app/admin/(protected)/posts/actions";
@@ -9,7 +10,7 @@ import { Markdown } from "@/components/site/markdown";
 
 const initialState = { error: "", success: "" };
 
-export function PostForm({ post }: { post?: PostRow | null }) {
+export function PostForm({ post, cancelHref }: { post?: PostRow | null; cancelHref?: string }) {
   const [state, action] = useActionState(savePostAction, initialState);
   const [title, setTitle] = useState(post?.title ?? "");
   const [slug, setSlug] = useState(post?.slug ?? "");
@@ -106,6 +107,11 @@ export function PostForm({ post }: { post?: PostRow | null }) {
       {state.success ? <p className="form-message form-message--success">{state.success}</p> : null}
 
       <div className="form-actions">
+        {cancelHref ? (
+          <Link href={cancelHref} className="button">
+            Cancel
+          </Link>
+        ) : null}
         <SubmitButton label={post ? "Save post" : "Create post"} pendingLabel="Saving..." />
       </div>
     </form>

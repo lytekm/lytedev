@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { logout } from "@/app/admin/login/actions";
 import { requireAdmin } from "@/lib/auth";
+import styles from "./layout.module.css";
 
 export default async function ProtectedAdminLayout({ children }: { children: React.ReactNode }) {
   const session = await requireAdmin();
 
   if (!session.configured) {
     return (
-      <main className="admin-setup shell page-section">
+      <main className={`shell page-section ${styles.setup}`}>
         <div className="card stack-md">
           <p className="eyebrow">Admin setup</p>
           <h1>Supabase configuration required</h1>
@@ -20,7 +21,7 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
   }
 
   return (
-    <div className="admin-shell">
+    <div className={styles.shell}>
       <header className="admin-header">
         <div className="shell admin-header__inner">
           <Link href="/admin" className="brand-mark">

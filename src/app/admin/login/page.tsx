@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LoginForm } from "@/components/admin/login-form";
+import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Admin Login",
@@ -18,8 +19,8 @@ export default async function AdminLoginPage({
   const { reason } = await searchParams;
 
   return (
-    <main className="admin-login shell page-section">
-      <div className="admin-login__intro stack-md">
+    <main className={`shell page-section ${styles.page}`}>
+      <div className={styles.intro}>
         <p className="eyebrow">Private admin</p>
         <h1>Sign in to manage LyteDev</h1>
         <p className="muted">
@@ -31,7 +32,7 @@ export default async function AdminLoginPage({
         </Link>
       </div>
 
-      <LoginForm />
+      <LoginForm className={styles.forms} />
     </main>
   );
 }

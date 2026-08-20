@@ -6,12 +6,12 @@ import { SubmitButton } from "@/components/admin/submit-button";
 
 const initialState = { error: "", success: "" };
 
-export function LoginForm() {
+export function LoginForm({ className }: { className?: string }) {
   const [passwordState, passwordAction] = useActionState(loginWithPassword, initialState);
   const [magicState, magicAction] = useActionState(sendMagicLink, initialState);
 
   return (
-    <div className="admin-login__forms">
+    <div className={className}>
       <form action={passwordAction} className="card admin-form stack-md">
         <div>
           <p className="eyebrow">Password login</p>

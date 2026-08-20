@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Markdown } from "@/components/site/markdown";
 import { absoluteUrl, calculateReadingTime, formatDate } from "@/lib/utils";
 import { getAllPostSlugs, requirePost } from "@/lib/content/queries";
+import styles from "./page.module.css";
 
 export async function generateStaticParams() {
   const slugs = await getAllPostSlugs();
@@ -34,14 +35,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const post = await requirePost(slug);
 
   return (
-    <article className="shell page-section article-page">
-      <header className="article-header">
+    <article className={`shell page-section ${styles.page}`}>
+      <header className={styles.header}>
         <div className="card-meta">
           <span>{formatDate(post.published_at ?? post.created_at)}</span>
           <span>{calculateReadingTime(post.content)}</span>
         </div>
-        <h1>{post.title}</h1>
-        <p className="detail-hero__lede">{post.excerpt}</p>
+        <h1 className={styles.title}>{post.title}</h1>
+        <p className={styles.lede}>{post.excerpt}</p>
         <div className="tag-row">
           {post.tags.map((tag) => (
             <span key={tag} className="chip">
@@ -50,7 +51,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           ))}
         </div>
         {post.cover_image_url ? (
-          <div className="article-cover">
+          <div className={styles.cover}>
             <Image src={post.cover_image_url} alt={`${post.title} cover`} fill sizes="100vw" className="project-card__image" />
           </div>
         ) : null}

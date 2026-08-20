@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useMemo, useState } from "react";
+import Link from "next/link";
 import type { ProjectRow } from "@/lib/supabase/database.types";
 import { joinList, slugify } from "@/lib/utils";
 import { PROJECT_STATUSES } from "@/lib/constants";
@@ -9,7 +10,7 @@ import { SubmitButton } from "@/components/admin/submit-button";
 
 const initialState = { error: "", success: "" };
 
-export function ProjectForm({ project }: { project?: ProjectRow | null }) {
+export function ProjectForm({ project, cancelHref }: { project?: ProjectRow | null; cancelHref?: string }) {
   const [state, action] = useActionState(saveProjectAction, initialState);
   const [title, setTitle] = useState(project?.title ?? "");
   const [slug, setSlug] = useState(project?.slug ?? "");
@@ -110,6 +111,11 @@ export function ProjectForm({ project }: { project?: ProjectRow | null }) {
       {state.success ? <p className="form-message form-message--success">{state.success}</p> : null}
 
       <div className="form-actions">
+        {cancelHref ? (
+          <Link href={cancelHref} className="button">
+            Cancel
+          </Link>
+        ) : null}
         <SubmitButton label={project ? "Save project" : "Create project"} pendingLabel="Saving..." />
       </div>
     </form>
