@@ -1,18 +1,57 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { STORAGE_BUCKET } from "@/lib/constants";
+import { MediaLibrary } from "@/components/admin/media-library";
+
+async function getFolderAssets(folder: string) {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.storage.from(STORAGE_BUCKET).list(folder, {
+    limit: 100,
+    sortBy: { column: "created_at", order: "desc" },
+  });
+
+  if (error || !data) {
+    return [];
+  }
+
+  return data
+    .filter((item) => item.name)
+    .map((item) => {
+      const path = `${folder}/${item.name}`;
+      const { data: publicUrl } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+
+      return {
+        name: item.name,
+        path,
+        url: publicUrl.publicUrl,
+        createdAt: item.created_at ?? null,
+      };
+    });
+}
 
 export default async function AdminMediaPage() {
   const supabase = await createSupabaseServerClient();
-  const [{ data: projects }, { data: posts }] = await Promise.all([
+  const [{ data: projects }, { data: posts }, projectInlineAssets, postInlineAssets] = await Promise.all([
     supabase.from("projects").select("id, title, image_url").order("updated_at", { ascending: false }),
     supabase.from("posts").select("id, title, cover_image_url").order("updated_at", { ascending: false }),
+    getFolderAssets("inline/projects"),
+    getFolderAssets("inline/posts"),
   ]);
+  const inlineAssets = [...projectInlineAssets, ...postInlineAssets].sort((a, b) => {
+    return new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime();
+  });
 
   return (
     <section className="shell page-section stack-lg">
       <div className="section-heading">
         <p className="eyebrow">Media</p>
         <h1>Storage references</h1>
-        <p className="muted">Images are uploaded through the project and post editors into the shared Supabase Storage bucket.</p>
+        <p className="muted">Images are uploaded through the project and post editors into the shared Supabase Storage bucket. Copy the generated Markdown snippets for inline content images.</p>
+      </div>
+
+      <div className="card stack-md">
+        <h2>Inline content library</h2>
+        <p className="muted">These assets are ready to paste into project descriptions and blog posts with standard Markdown image syntax.</p>
+        {inlineAssets.length ? <MediaLibrary assets={inlineAssets} /> : <p className="muted">Upload inline images from a post or project editor to populate this library.</p>}
       </div>
 
       <div className="admin-card-grid">

@@ -4,6 +4,7 @@ import { useActionState, useMemo, useState } from "react";
 import Link from "next/link";
 import type { PostRow } from "@/lib/supabase/database.types";
 import { joinList, slugify } from "@/lib/utils";
+import { InlineImageUploader } from "@/components/admin/inline-image-uploader";
 import { savePostAction } from "@/app/admin/(protected)/posts/actions";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { Markdown } from "@/components/site/markdown";
@@ -19,6 +20,10 @@ export function PostForm({ post, cancelHref }: { post?: PostRow | null; cancelHr
 
   const suggestedSlug = useMemo(() => slugify(title), [title]);
   const displaySlug = slugTouched ? slug : suggestedSlug;
+
+  function insertMarkdown(markdown: string) {
+    setContent((current) => (current.trimEnd() ? `${current.trimEnd()}\n\n${markdown}` : markdown));
+  }
 
   return (
     <form action={action} className="card admin-form stack-md">
@@ -76,6 +81,13 @@ export function PostForm({ post, cancelHref }: { post?: PostRow | null; cancelHr
           </div>
         </div>
       </div>
+
+      <InlineImageUploader
+        folder="inline/posts"
+        title="Inline post images"
+        description="Upload an image, then copy or insert the generated Markdown snippet directly into the post body."
+        onInsert={insertMarkdown}
+      />
 
       <div className="field-grid">
         <label className="field field--wide">

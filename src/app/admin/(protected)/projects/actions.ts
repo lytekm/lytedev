@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
-import { ALLOWED_IMAGE_TYPES, MAX_UPLOAD_SIZE, STORAGE_BUCKET } from "@/lib/constants";
+import { uploadImage } from "@/lib/admin/media";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { slugify, splitCommaList } from "@/lib/utils";
 
@@ -26,31 +26,6 @@ const projectSchema = z.object({
   sort_order: z.coerce.number().int().min(0),
   existingImageUrl: z.string().optional(),
 });
-
-async function uploadImage(file: File, folder: string) {
-  if (!file.size) return null;
-  if (file.size > MAX_UPLOAD_SIZE) throw new Error("Image exceeds the 5 MB limit.");
-  if (!ALLOWED_IMAGE_TYPES.includes(file.type as (typeof ALLOWED_IMAGE_TYPES)[number])) {
-    throw new Error("Unsupported image type.");
-  }
-
-  const supabase = await createSupabaseServerClient();
-  const extension = file.name.split(".").pop() ?? "png";
-  const path = `${folder}/${Date.now()}-${slugify(file.name.replace(/\.[^.]+$/, ""))}.${extension}`;
-  const arrayBuffer = await file.arrayBuffer();
-
-  const { error } = await supabase.storage.from(STORAGE_BUCKET).upload(path, arrayBuffer, {
-    contentType: file.type,
-    upsert: true,
-  });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(path);
-  return data.publicUrl;
-}
 
 export async function saveProjectAction(_: FormState, formData: FormData): Promise<FormState> {
   const session = await requireAdmin();
@@ -82,7 +57,7 @@ export async function saveProjectAction(_: FormState, formData: FormData): Promi
     let imageUrl = parsed.existingImageUrl || null;
 
     if (imageFile instanceof File && imageFile.size > 0) {
-      imageUrl = await uploadImage(imageFile, "projects");
+      imageUrl = (await uploadImage(imageFile, "projects"))?.publicUrl ?? null;
     }
 
     const payload = {

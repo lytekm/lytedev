@@ -6,6 +6,7 @@ import type { ProjectRow } from "@/lib/supabase/database.types";
 import { joinList, slugify } from "@/lib/utils";
 import { PROJECT_STATUSES } from "@/lib/constants";
 import { saveProjectAction } from "@/app/admin/(protected)/projects/actions";
+import { InlineImageUploader } from "@/components/admin/inline-image-uploader";
 import { SubmitButton } from "@/components/admin/submit-button";
 
 const initialState = { error: "", success: "" };
@@ -15,9 +16,14 @@ export function ProjectForm({ project, cancelHref }: { project?: ProjectRow | nu
   const [title, setTitle] = useState(project?.title ?? "");
   const [slug, setSlug] = useState(project?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(Boolean(project?.slug));
+  const [content, setContent] = useState(project?.content ?? "");
 
   const suggestedSlug = useMemo(() => slugify(title), [title]);
   const displaySlug = slugTouched ? slug : suggestedSlug;
+
+  function insertMarkdown(markdown: string) {
+    setContent((current) => (current.trimEnd() ? `${current.trimEnd()}\n\n${markdown}` : markdown));
+  }
 
   return (
     <form action={action} className="card admin-form stack-md">
@@ -76,8 +82,15 @@ export function ProjectForm({ project, cancelHref }: { project?: ProjectRow | nu
 
       <label className="field">
         <span>Detailed content</span>
-        <textarea name="content" rows={12} defaultValue={project?.content ?? ""} required />
+        <textarea name="content" rows={12} value={content} onChange={(event) => setContent(event.target.value)} required />
       </label>
+
+      <InlineImageUploader
+        folder="inline/projects"
+        title="Inline project images"
+        description="Upload diagrams, screenshots, or supporting visuals and insert the generated Markdown into the project description."
+        onInsert={insertMarkdown}
+      />
 
       <div className="field-grid">
         <label className="field field--wide">
