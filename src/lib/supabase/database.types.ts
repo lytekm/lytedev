@@ -72,8 +72,10 @@ export type Database = {
           created_at: string;
           featured: boolean;
           github_url: string | null;
+          home_highlight: boolean;
           id: string;
           image_url: string | null;
+          is_experiment: boolean;
           live_url: string | null;
           published: boolean;
           short_description: string;
@@ -89,8 +91,10 @@ export type Database = {
           created_at?: string;
           featured?: boolean;
           github_url?: string | null;
+          home_highlight?: boolean;
           id?: string;
           image_url?: string | null;
+          is_experiment?: boolean;
           live_url?: string | null;
           published?: boolean;
           short_description: string;
@@ -106,8 +110,10 @@ export type Database = {
           created_at?: string;
           featured?: boolean;
           github_url?: string | null;
+          home_highlight?: boolean;
           id?: string;
           image_url?: string | null;
+          is_experiment?: boolean;
           live_url?: string | null;
           published?: boolean;
           short_description?: string;

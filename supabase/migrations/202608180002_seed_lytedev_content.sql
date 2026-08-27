@@ -7,6 +7,8 @@ insert into public.projects (
   technologies,
   image_url,
   featured,
+  home_highlight,
+  is_experiment,
   published,
   sort_order
 )
@@ -21,6 +23,8 @@ values
     '/branding/lyte-logo.png',
     true,
     true,
+    false,
+    true,
     1
   ),
   (
@@ -33,6 +37,8 @@ values
     '/branding/lyte-logo.png',
     true,
     true,
+    false,
+    true,
     2
   ),
   (
@@ -44,6 +50,8 @@ values
     array['Next.js', 'PostgreSQL', 'Analytics'],
     '/branding/lyte-logo.png',
     true,
+    true,
+    false,
     true,
     3
   )

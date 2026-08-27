@@ -1,0 +1,24 @@
+.page {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.timeline {
+  display: grid;
+  gap: 2.75rem;
+}
+
+.yearGroup {
+  display: grid;
+  gap: 1rem;
+}
+
+.year {
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--site-line);
+  font-size: 1rem;
+  font-family: var(--font-mono), monospace;
+  color: var(--site-muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}

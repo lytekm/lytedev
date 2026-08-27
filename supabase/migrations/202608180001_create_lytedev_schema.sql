@@ -25,6 +25,8 @@ create table if not exists public.projects (
   live_url text,
   image_url text,
   featured boolean not null default false,
+  home_highlight boolean not null default false,
+  is_experiment boolean not null default false,
   published boolean not null default false,
   sort_order integer not null default 0,
   created_at timestamptz not null default timezone('utc', now()),
@@ -45,7 +47,7 @@ create table if not exists public.posts (
   updated_at timestamptz not null default timezone('utc', now())
 );
 
-create index if not exists projects_published_sort_idx on public.projects (published, featured, sort_order, updated_at desc);
+create index if not exists projects_published_sort_idx on public.projects (published, featured, home_highlight, is_experiment, sort_order, updated_at desc);
 create index if not exists posts_published_date_idx on public.posts (published, published_at desc, updated_at desc);
 create index if not exists projects_status_idx on public.projects (status);
 

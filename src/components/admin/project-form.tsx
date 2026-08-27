@@ -67,6 +67,8 @@ export function ProjectForm({ project, cancelHref }: { project?: ProjectRow | nu
         </label>
       </div>
 
+      <p className="muted">Use Main projects section plus Display order for the larger `/projects` archive cards. Home page highlight and Experiments can be toggled independently.</p>
+
       <label className="field">
         <span>Short description</span>
         <textarea name="short_description" rows={3} defaultValue={project?.short_description ?? ""} required />
@@ -99,7 +101,15 @@ export function ProjectForm({ project, cancelHref }: { project?: ProjectRow | nu
         </label>
         <label className="toggle">
           <input name="featured" type="checkbox" defaultChecked={project?.featured ?? false} />
-          <span>Featured project</span>
+          <span>Main projects section</span>
+        </label>
+        <label className="toggle">
+          <input name="home_highlight" type="checkbox" defaultChecked={project?.home_highlight ?? false} />
+          <span>Home page highlight</span>
+        </label>
+        <label className="toggle">
+          <input name="is_experiment" type="checkbox" defaultChecked={project?.is_experiment ?? false} />
+          <span>Experiments / smaller projects</span>
         </label>
         <label className="toggle">
           <input name="published" type="checkbox" defaultChecked={project?.published ?? true} />

@@ -4,39 +4,47 @@ import type { ProjectRow } from "@/lib/supabase/database.types";
 import { StatusBadge } from "@/components/site/status-badge";
 import { cn } from "@/lib/utils";
 
-export function ProjectCard({ project, priority = false }: { project: ProjectRow; priority?: boolean }) {
+function getProjectYear(project: ProjectRow) {
+  return new Date(project.created_at).getFullYear();
+}
+
+export function ProjectCard({
+  project,
+  priority = false,
+  index = 0,
+}: {
+  project: ProjectRow;
+  priority?: boolean;
+  index?: number;
+}) {
   return (
-    <article className={cn("card project-card", project.featured && "project-card--featured")}>
-      <Link href={`/projects/${project.slug}`} className="project-card__visual">
-        {project.featured ? <span className="project-card__dots" aria-hidden="true" /> : null}
-        <Image
-          src={project.image_url ?? "/branding/lyte-logo.png"}
-          alt={`${project.title} preview`}
-          fill
-          priority={priority}
-          sizes="(max-width: 900px) 100vw, 33vw"
-          className="project-card__image"
-        />
-      </Link>
-
-      <div className="project-card__body">
-        <div className="card-meta">
-          <StatusBadge status={project.status} />
-          {project.featured ? <span className="chip">Featured</span> : null}
-        </div>
-
-        <div className="stack-sm">
+    <article className={cn("project-feature", index % 2 === 1 && "project-feature--reverse")}>
+      <div className="project-feature__copy">
+        <div className="project-feature__topline">
           <h3>
             <Link href={`/projects/${project.slug}`}>{project.title}</Link>
           </h3>
-          <p className="muted">{project.short_description}</p>
+          <span className="project-feature__index">{String(index + 1).padStart(2, "0")}</span>
         </div>
 
-        <div className="meta-row">
-          <span>{project.technologies.join(" / ")}</span>
+        <p className="project-feature__lede">{project.short_description}</p>
+
+        <div className="project-feature__meta">
+          <div>
+            <span className="project-feature__label">Stack</span>
+            <p>{project.technologies.join(" / ")}</p>
+          </div>
+          <div>
+            <span className="project-feature__label">Status</span>
+            <StatusBadge status={project.status} subtle />
+          </div>
+          <div>
+            <span className="project-feature__label">Year</span>
+            <p>{getProjectYear(project)}</p>
+          </div>
         </div>
 
-        <div className="link-row">
+        <div className="project-feature__links">
           <Link href={`/projects/${project.slug}`}>View project</Link>
           {project.github_url ? (
             <a href={project.github_url} target="_blank" rel="noreferrer">
@@ -50,6 +58,18 @@ export function ProjectCard({ project, priority = false }: { project: ProjectRow
           ) : null}
         </div>
       </div>
+
+      <Link href={`/projects/${project.slug}`} className="project-feature__visual">
+        <span className="project-feature__grid" aria-hidden="true" />
+        <Image
+          src={project.image_url ?? "/branding/lyte-logo.png"}
+          alt={`${project.title} preview`}
+          fill
+          priority={priority}
+          sizes="(max-width: 1024px) 100vw, 52vw"
+          className="project-feature__image"
+        />
+      </Link>
     </article>
   );
 }

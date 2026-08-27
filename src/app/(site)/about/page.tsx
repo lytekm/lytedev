@@ -12,61 +12,63 @@ export const metadata: Metadata = {
 
 const sections = [
   {
-    title: "About me",
-    body: `I'm a software engineer who enjoys building things from the ground up and understanding how they work. 
-    My professional experience is primarily in full-stack development, but I'm particularly interested in backend 
-    systems, graphics programming, developer tooling, and game engine development.
-
-    LyteDev is my home for those projects. Some are serious products, some are open-source tools, and some exist simply because I wanted to learn how something worked or didn't want to pay for an app I could build myself.`,
+    label: "01",
+    title: "What I do",
+    body:
+      "I build software professionally and spend a lot of my personal time building more of it for myself. Most of that work lives somewhere between product engineering, tooling, and the kind of technical experiments that start with a question and turn into a real project.",
   },
   {
+    label: "02",
     title: "What I work with",
-    body: `I primarily work with TypeScript, React, Next.js, Node.js, and MongoDB professionally. 
-    Outside of work, I've been spending more time with C++, SDL, OpenGL, and GLSL while developing Lyte Engine.`,
+    body:
+      "A lot of my day-to-day work is TypeScript, React, Next.js, and backend application development. Outside of work I keep returning to C++, SDL, OpenGL, GLSL, and graphics-oriented systems because I like understanding what the abstractions are built on top of.",
   },
   {
+    label: "03",
     title: "What I'm interested in",
-    body: `I'm especially interested in backend and systems engineering, graphics programming, game engine 
-    architecture, developer tools, and finding simple solutions to problems that don't need complicated ones.`,
+    body:
+      "I am interested in backend and systems engineering, rendering, game engine architecture, developer tools, and practical software that solves a narrow problem well. I also like documenting the work clearly enough that the next version of me can pick it back up.",
+  },
+  {
+    label: "04",
+    title: "Elsewhere",
+    body:
+      "LyteDev is the home for personal software, experiments, and technical writing. If something is public, there is a good chance it eventually ends up here with a write-up, a screenshot, or at least a note on what I learned building it.",
   },
 ];
 
 export default function AboutPage() {
   return (
     <section className={`shell page-section ${styles.page}`}>
-      <div className={`section-heading ${styles.heading}`}>
-        <p className="eyebrow">About</p>
+      <div className={styles.heading}>
+        <p className="kicker">About</p>
         <h1>Kevin Morrison</h1>
-        <p className="muted">
-          LyteDev is the public home for personal software engineering work,
-          technical notes, experiments, and projects.
+        <p>
+          I am a software engineer who likes building useful things and understanding the systems underneath them. LyteDev is where I keep the personal side of that work.
         </p>
       </div>
 
       <div className={styles.grid}>
         {sections.map((section) => (
-          <article key={section.title} className={`card ${styles.card}`}>
+          <article key={section.title} className={styles.card}>
+            <p className={styles.count}>{section.label}</p>
             <h2>{section.title}</h2>
-            <p className="muted">{section.body}</p>
+            <p>{section.body}</p>
           </article>
         ))}
       </div>
 
-      <div className={`card ${styles.links}`}>
-        <p className="eyebrow">GitHub</p>
-        <a href={GITHUB_URL} target="_blank" rel="noreferrer">
-          {GITHUB_URL}
-        </a>
-        <p className="eyebrow">LinkedIn</p>
-        <a
-          href="https://www.linkedin.com/in/kevin-r-morrison"
-          target="_blank"
-          rel="noreferrer"
-        >
-          www.linkedin.com/in/kevin-r-morrison
-        </a>
-        <p className="eyebrow">Email</p>
-        <a href="mailto:kevin@lytedev.com">kevin@lytedev.com</a>
+      <div className={styles.links}>
+        <h2>Elsewhere</h2>
+        <div className={styles.linkList}>
+          <a href={GITHUB_URL} target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+          <a href="mailto:kevin@lytedev.com">Email</a>
+          <a href="https://lytedev.ca" target="_blank" rel="noreferrer">
+            Website
+          </a>
+        </div>
       </div>
     </section>
   );

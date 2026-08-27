@@ -63,7 +63,7 @@ export const getPublishedPosts = cache(async () => {
 
 export async function getFeaturedProjects() {
   const projects = await getPublishedProjects();
-  return projects.filter((project) => project.featured).slice(0, 3);
+  return projects.filter((project) => project.home_highlight).slice(0, 3);
 }
 
 export async function getProjectBySlug(slug: string) {

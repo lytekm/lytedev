@@ -23,6 +23,8 @@ export default async function AdminProjectsPage({
   const isModalOpen = Boolean(create || selectedProject);
   const totalProjects = projects?.length ?? 0;
   const publishedProjects = projects?.filter((project) => project.published).length ?? 0;
+  const highlightedProjects = projects?.filter((project) => project.home_highlight).length ?? 0;
+  const experiments = projects?.filter((project) => project.is_experiment).length ?? 0;
 
   return (
     <>
@@ -47,6 +49,14 @@ export default async function AdminProjectsPage({
             <span className="eyebrow">Published</span>
             <strong>{publishedProjects}</strong>
           </article>
+          <article className="card stat-card">
+            <span className="eyebrow">Home highlights</span>
+            <strong>{highlightedProjects}</strong>
+          </article>
+          <article className="card stat-card">
+            <span className="eyebrow">Experiments</span>
+            <strong>{experiments}</strong>
+          </article>
         </div>
 
         <div className="list-panel">
@@ -65,13 +75,15 @@ export default async function AdminProjectsPage({
                   <div className="card-meta">
                     <StatusBadge status={project.status} subtle />
                     {project.published ? <span className="chip chip--active">Published</span> : <span className="chip">Draft</span>}
-                    {project.featured ? <span className="chip">Featured</span> : null}
+                    {project.featured ? <span className="chip">Main project</span> : null}
+                    {project.home_highlight ? <span className="chip">Home highlight</span> : null}
+                    {project.is_experiment ? <span className="chip">Experiment</span> : null}
                   </div>
                   <div className="stack-sm">
                     <h2>{project.title}</h2>
                     <p className="muted">{project.short_description}</p>
                   </div>
-                  <p className="meta-row">/{project.slug}</p>
+                  <p className="meta-row">/{project.slug} / Order {project.sort_order}</p>
                 </div>
 
                 <div className="admin-item-actions">
