@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { PageViewTracker } from "@/components/site/page-view-tracker";
 import Link from "next/link";
 import Image from "next/image";
 import { Markdown } from "@/components/site/markdown";
 import { StatusBadge } from "@/components/site/status-badge";
 import { absoluteUrl } from "@/lib/utils";
+import { LOGO_PATH } from "@/lib/constants";
 import { getAllProjectSlugs, requireProject } from "@/lib/content/queries";
 import styles from "./page.module.css";
 
@@ -38,6 +40,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
   return (
     <article className={`shell page-section ${styles.page}`}>
+      <PageViewTracker path={`/projects/${project.slug}`} />
       <Link href="/projects" className="back-link">
         {"<- Back to projects"}
       </Link>
@@ -78,11 +81,12 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         <div className={styles.visual}>
           <span className={styles.visualDots} aria-hidden="true" />
           <Image
-            src={project.image_url ?? "/branding/lyte-logo.png"}
+            src={project.image_url ?? LOGO_PATH}
             alt={`${project.title} visual`}
             fill
-            sizes="(max-width: 900px) 100vw, 42vw"
-            className={styles.image}
+            priority
+            sizes="(max-width: 1024px) 100vw, (max-width: 1288px) 60vw, 740px"
+            className={!project.image_url || project.image_url === LOGO_PATH ? styles.logoImage : styles.image}
           />
         </div>
       </div>

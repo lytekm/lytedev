@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageViewTracker } from "@/components/site/page-view-tracker";
 import { EmptyState } from "@/components/site/empty-state";
 import { PostCard } from "@/components/site/post-card";
 import { getPublishedPosts } from "@/lib/content/queries";
@@ -6,7 +7,7 @@ import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "Technical writing published on LyteDev.",
+  description: "Notes on what I’m building, what I’m learning, and the decisions behind my projects.",
   alternates: {
     canonical: "/blog",
   },
@@ -25,10 +26,11 @@ export default async function BlogPage() {
 
   return (
     <section className={`shell page-section ${styles.page}`}>
+      <PageViewTracker path="/blog" />
       <div className="page-intro">
         <p className="kicker">Writing</p>
-        <h1>Engineering notes and project writing.</h1>
-        <p>A chronological publication index for technical posts, implementation notes, and smaller observations.</p>
+        <h1>Notes from my projects.</h1>
+        <p>What I’m working on, what I’ve learned, and the problems I’ve run into along the way.</p>
       </div>
 
       {posts.length ? (
@@ -45,7 +47,7 @@ export default async function BlogPage() {
           ))}
         </div>
       ) : (
-        <EmptyState title="No posts published yet." description="Publish a post from the admin area to populate the writing archive." />
+        <EmptyState title="No posts yet." description="I’ll share project updates and notes here when they’re ready." />
       )}
     </section>
   );

@@ -15,6 +15,7 @@ Production-ready Next.js App Router portfolio and CMS for `https://lytedev.ca`.
 
 - Public pages: `/`, `/projects`, `/projects/[slug]`, `/blog`, `/blog/[slug]`, `/about`
 - Private admin: `/admin`, `/admin/login`, `/admin/projects`, `/admin/posts`, `/admin/media`
+- Page-view analytics on `/admin`, with daily activity, per-page counts, recent views, and owner exclusion
 - Supabase schema + RLS + storage policies in `supabase/migrations`
 - Seed content for Lyte Engine, Membrant, and Calorie Tracker
 - SEO routes: `sitemap.xml` and `robots.txt`
@@ -72,12 +73,15 @@ Run these files in this exact order:
 
 1. `supabase/migrations/202608180001_create_lytedev_schema.sql`
 2. `supabase/migrations/202608180002_seed_lytedev_content.sql`
+3. `supabase/migrations/202608270001_add_project_display_flags.sql`
+4. `supabase/migrations/202609280001_add_page_view_analytics.sql`
 
 That creates:
 
 - `projects`
 - `posts`
 - `admin_users`
+- `page_views` and the restricted analytics collection/reporting functions
 - `project_status` enum
 - `updated_at` triggers
 - RLS policies for public reads and admin-only writes
@@ -196,6 +200,38 @@ In Vercel:
 - Authenticated users must also exist in `public.admin_users`.
 - Database writes rely on RLS, not hidden UI.
 - The Supabase anonymous key is safe to expose; the service-role key is never used in the app.
+
+## Page-view analytics
+
+### Enable analytics on an existing deployment
+
+Run `supabase/migrations/202609280001_add_page_view_analytics.sql` in the Supabase SQL editor (or apply it with your usual migration workflow), then deploy the updated app. No additional API keys or analytics service are needed. Collection starts after deployment and the migration; past visits cannot be recovered.
+
+The admin overview shows:
+
+- 7-, 30-, and 90-day reporting periods, including today
+- Total views, today's views, and the number of different pages viewed
+- Daily activity, including dates with no views
+- Per-page counts, plus the first and latest view in the selected period
+- The latest 50 view timestamps in the selected period
+
+All dates and times use **UTC**. Click **Refresh** to fetch the latest data. Reports are aggregated in Postgres rather than from a capped list of events, so the Supabase API row limit does not truncate totals.
+
+### Keep your own visits out
+
+Signed-in admins are excluded by the database. Visiting admin also sets a one-year, HTTP-only exclusion cookie for that browser, so it stays excluded after sign-out. Sign in and visit admin once on each browser/device you use. The dashboard's **Exclude this browser** / **Count signed-out visits** control changes that browser's setting; signed-in admin visits are always excluded.
+
+Clearing cookies, using a private window, changing browsers, or letting the cookie expire removes the saved exclusion. Visits made before a browser is recognized cannot be identified retroactively. The cookie is scoped to the site's hostname.
+
+### What gets counted
+
+- A visible public page load or navigation counts as one view. Reloads and repeat visits count again; these are **not unique visitor counts**.
+- Link prefetches, admin/auth routes, missing pages, and unpublished content do not count. Query strings are not stored, so filtered views are grouped under the same page path.
+- Common bots and requests with Do Not Track or Global Privacy Control are skipped.
+- Only the page path, server timestamp, and a random per-view event ID are stored. There are no visitor identifiers, IP addresses, referrers, or query strings. Re-delivering the same event ID cannot increase the count.
+- Reports and stored events are admin-only. Public clients can only call a restricted recording function for known, published routes.
+
+Collection defaults to production only. Local development and Vercel preview deployments are excluded. Set the server environment variable `ANALYTICS_ENABLED=true` to explicitly enable collection in another environment, or `ANALYTICS_ENABLED=false` to pause it. Reports remain available while collection is paused. Tracking failures do not interrupt the public site; admin shows a setup message if the migration is missing.
 
 ## Content model
 

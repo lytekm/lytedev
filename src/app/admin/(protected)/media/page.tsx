@@ -44,14 +44,14 @@ export default async function AdminMediaPage() {
     <section className="shell page-section stack-lg">
       <div className="section-heading">
         <p className="eyebrow">Media</p>
-        <h1>Storage references</h1>
-        <p className="muted">Images are uploaded through the project and post editors into the shared Supabase Storage bucket. Copy the generated Markdown snippets for inline content images.</p>
+        <h1>Media library</h1>
+        <p className="muted">Images uploaded from your project and post editors. Copy a URL or Markdown snippet to reuse an image.</p>
       </div>
 
       <div className="card stack-md">
-        <h2>Inline content library</h2>
-        <p className="muted">These assets are ready to paste into project descriptions and blog posts with standard Markdown image syntax.</p>
-        {inlineAssets.length ? <MediaLibrary assets={inlineAssets} /> : <p className="muted">Upload inline images from a post or project editor to populate this library.</p>}
+        <h2>Inline images</h2>
+        <p className="muted">Screenshots and other images used in your writing.</p>
+        {inlineAssets.length ? <MediaLibrary assets={inlineAssets} /> : <p className="muted">Upload an inline image in a post or project editor to see it here.</p>}
       </div>
 
       <div className="admin-card-grid">

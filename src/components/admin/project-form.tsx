@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useMemo, useState } from "react";
+import { useActionState, useId, useMemo, useState } from "react";
 import Link from "next/link";
 import type { ProjectRow } from "@/lib/supabase/database.types";
 import { joinList, slugify } from "@/lib/utils";
@@ -12,6 +12,7 @@ import { SubmitButton } from "@/components/admin/submit-button";
 const initialState = { error: "", success: "" };
 
 export function ProjectForm({ project, cancelHref }: { project?: ProjectRow | null; cancelHref?: string }) {
+  const formId = useId();
   const [state, action] = useActionState(saveProjectAction, initialState);
   const [title, setTitle] = useState(project?.title ?? "");
   const [slug, setSlug] = useState(project?.slug ?? "");
@@ -26,10 +27,7 @@ export function ProjectForm({ project, cancelHref }: { project?: ProjectRow | nu
   }
 
   return (
-    <form action={action} className="card admin-form stack-md">
-      <input type="hidden" name="id" value={project?.id ?? ""} />
-      <input type="hidden" name="existingImageUrl" value={project?.image_url ?? ""} />
-
+    <div className="card admin-form stack-md">
       <div className="form-header">
         <div>
           <p className="eyebrow">Project editor</p>
@@ -40,12 +38,13 @@ export function ProjectForm({ project, cancelHref }: { project?: ProjectRow | nu
       <div className="field-grid">
         <label className="field field--wide">
           <span>Title</span>
-          <input name="title" value={title} onChange={(event) => setTitle(event.target.value)} required />
+          <input form={formId} name="title" value={title} onChange={(event) => setTitle(event.target.value)} required />
         </label>
 
         <label className="field">
           <span>Slug</span>
           <input
+            form={formId}
             name="slug"
             value={displaySlug}
             onChange={(event) => {
@@ -58,7 +57,7 @@ export function ProjectForm({ project, cancelHref }: { project?: ProjectRow | nu
 
         <label className="field">
           <span>Status</span>
-          <select name="status" defaultValue={project?.status ?? "In Development"}>
+          <select form={formId} name="status" defaultValue={project?.status ?? "In Development"}>
             {PROJECT_STATUSES.map((status) => (
               <option key={status} value={status}>
                 {status}
@@ -69,63 +68,63 @@ export function ProjectForm({ project, cancelHref }: { project?: ProjectRow | nu
 
         <label className="field">
           <span>Display order</span>
-          <input name="sort_order" type="number" min="0" defaultValue={project?.sort_order ?? 0} required />
+          <input form={formId} name="sort_order" type="number" min="0" defaultValue={project?.sort_order ?? 0} required />
         </label>
       </div>
 
-      <p className="muted">Use Main projects section plus Display order for the larger `/projects` archive cards. Home page highlight and Experiments can be toggled independently.</p>
+      <p className="muted">Main projects appear in Selected Work. Lower display-order numbers appear first. Home highlights and experiments are separate settings.</p>
 
       <label className="field">
         <span>Short description</span>
-        <textarea name="short_description" rows={3} defaultValue={project?.short_description ?? ""} required />
+        <textarea form={formId} name="short_description" rows={3} defaultValue={project?.short_description ?? ""} required />
       </label>
 
       <label className="field">
         <span>Detailed content</span>
-        <textarea name="content" rows={12} value={content} onChange={(event) => setContent(event.target.value)} required />
+        <textarea form={formId} name="content" rows={12} value={content} onChange={(event) => setContent(event.target.value)} required />
       </label>
 
       <InlineImageUploader
         folder="inline/projects"
         title="Inline project images"
-        description="Upload diagrams, screenshots, or supporting visuals and insert the generated Markdown into the project description."
+        description="Upload a screenshot or diagram, then insert it into the project write-up."
         onInsert={insertMarkdown}
       />
 
       <div className="field-grid">
         <label className="field field--wide">
           <span>Technologies</span>
-          <input name="technologies" defaultValue={joinList(project?.technologies)} placeholder="TypeScript, Next.js, Supabase" />
+          <input form={formId} name="technologies" defaultValue={joinList(project?.technologies)} placeholder="TypeScript, Next.js, Supabase" />
         </label>
         <label className="field">
           <span>GitHub URL</span>
-          <input name="github_url" type="url" defaultValue={project?.github_url ?? ""} />
+          <input form={formId} name="github_url" type="url" defaultValue={project?.github_url ?? ""} />
         </label>
         <label className="field">
           <span>Live URL</span>
-          <input name="live_url" type="url" defaultValue={project?.live_url ?? ""} />
+          <input form={formId} name="live_url" type="url" defaultValue={project?.live_url ?? ""} />
         </label>
       </div>
 
       <div className="field-grid">
         <label className="field field--wide">
           <span>Project image upload</span>
-          <input name="image" type="file" accept="image/png,image/jpeg,image/webp,image/avif,image/gif" />
+          <input form={formId} name="image" type="file" accept="image/png,image/jpeg,image/webp,image/avif,image/gif" />
         </label>
         <label className="toggle">
-          <input name="featured" type="checkbox" defaultChecked={project?.featured ?? false} />
+          <input form={formId} name="featured" type="checkbox" defaultChecked={project?.featured ?? false} />
           <span>Main projects section</span>
         </label>
         <label className="toggle">
-          <input name="home_highlight" type="checkbox" defaultChecked={project?.home_highlight ?? false} />
+          <input form={formId} name="home_highlight" type="checkbox" defaultChecked={project?.home_highlight ?? false} />
           <span>Home page highlight</span>
         </label>
         <label className="toggle">
-          <input name="is_experiment" type="checkbox" defaultChecked={project?.is_experiment ?? false} />
+          <input form={formId} name="is_experiment" type="checkbox" defaultChecked={project?.is_experiment ?? false} />
           <span>Experiments / smaller projects</span>
         </label>
         <label className="toggle">
-          <input name="published" type="checkbox" defaultChecked={project?.published ?? true} />
+          <input form={formId} name="published" type="checkbox" defaultChecked={project?.published ?? true} />
           <span>Published</span>
         </label>
       </div>
@@ -133,14 +132,18 @@ export function ProjectForm({ project, cancelHref }: { project?: ProjectRow | nu
       {state.error ? <p className="form-message form-message--error">{state.error}</p> : null}
       {state.success ? <p className="form-message form-message--success">{state.success}</p> : null}
 
-      <div className="form-actions">
+      {/* Editor fields target this form so image uploads can use a separate form. */}
+      <form id={formId} action={action} className="form-actions">
+        <input type="hidden" name="id" value={project?.id ?? ""} />
+        <input type="hidden" name="existingImageUrl" value={project?.image_url ?? ""} />
+
         {cancelHref ? (
           <Link href={cancelHref} className="button">
             Cancel
           </Link>
         ) : null}
         <SubmitButton label={project ? "Save project" : "Create project"} pendingLabel="Saving..." />
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }

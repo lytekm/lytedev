@@ -27,7 +27,7 @@ export default async function AdminPostsPage({
           <div className="admin-page-head">
             <p className="eyebrow">Blog posts</p>
             <h1>Manage posts</h1>
-            <p className="muted">Keep the writing archive clean, consistent, and ready to publish without leaving the admin workspace.</p>
+            <p className="muted">Write, edit, and publish posts. Keep unfinished work as a draft.</p>
           </div>
           <Link href="/admin/posts?create=1" className="button button--primary">
             New post
@@ -51,7 +51,7 @@ export default async function AdminPostsPage({
               <p className="eyebrow">Library</p>
               <h2>All posts</h2>
             </div>
-            <p className="muted">Select any entry to edit it in a focused modal without disrupting the list.</p>
+            <p className="muted">Posts are listed by publication date, newest first.</p>
           </div>
 
           <div className="admin-collection">

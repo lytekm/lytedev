@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ProjectCard } from "@/components/site/project-card";
+import { PageViewTracker } from "@/components/site/page-view-tracker";
 import { PostCard } from "@/components/site/post-card";
 import { ProjectIndexItem } from "@/components/site/project-index-item";
 import { getPublishedProjects, getPublishedPosts } from "@/lib/content/queries";
@@ -21,14 +22,14 @@ export default async function HomePage() {
 
   return (
     <div className="page-stack">
+      <PageViewTracker path="/" />
       <section className={`shell ${styles.hero}`}>
         <div className={styles.copy}>
           <p className="kicker">Kevin Morrison / Software Engineer</p>
           <h1 className={styles.title}>LyteDev</h1>
           <p className={styles.lede}>
-            Personal engineering work spanning product ideas, graphics
-            programming, developer tooling, and notes on how the pieces fit
-            together.
+            I build apps, tools, and graphics projects. This is where I share
+            what I’m working on and what I’m learning.
           </p>
           <div className={styles.actions}>
             <Link href="/projects" className="text-link">
@@ -67,7 +68,7 @@ export default async function HomePage() {
         <div className="section-intro">
           <p className="kicker">Selected Work</p>
           <h2>Projects</h2>
-          <p>These are my larger standout projects.</p>
+          <p>The projects I’ve spent the most time building.</p>
         </div>
         <div className="feature-stack">
           {highlightedProjects.length ? (
@@ -81,8 +82,8 @@ export default async function HomePage() {
             ))
           ) : (
             <div className="empty-state">
-              <h3>Highlights will show here.</h3>
-              <p>Enable Home page highlight for any published project from the admin dashboard.</p>
+              <h3>Project write-ups are on the way.</h3>
+              <p>I’ll share the details here when they’re ready.</p>
             </div>
           )}
         </div>
@@ -93,12 +94,12 @@ export default async function HomePage() {
           <div>
             <h2>Lab</h2>
             <p>
-              Smaller utilities, prototypes, graphics experiments, and work that
-              benefits from a lighter index.
+              Smaller tools and experiments, usually built to solve a problem
+              or try something new.
             </p>
           </div>
           <Link href="/projects" className="text-link">
-            View all projects
+            Projects
           </Link>
         </div>
         <div className="project-index-list">
@@ -108,10 +109,9 @@ export default async function HomePage() {
             ))
           ) : (
             <div className="empty-state">
-              <h3>Experiments will land here.</h3>
+              <h3>More experiments to come.</h3>
               <p>
-                Smaller utilities, prototypes, and shorter engineering notes
-                will expand the lab over time.
+                I’ll add smaller projects here as I have something to share.
               </p>
             </div>
           )}
@@ -123,18 +123,23 @@ export default async function HomePage() {
           <div>
             <h2>Writing</h2>
             <p>
-              Notes on projects, technical decisions, and the systems underneath
-              the surface.
+              What I’ve been building, the decisions behind it, and what I’d do
+              differently next time.
             </p>
           </div>
           <Link href="/blog" className="text-link">
-            View all writing
+            Writing
           </Link>
         </div>
         <div className="post-list">
-          {posts.slice(0, 3).map((post) => (
+          {posts.length ? posts.slice(0, 3).map((post) => (
             <PostCard key={post.id} post={post} />
-          ))}
+          )) : (
+            <div className="empty-state">
+              <h3>No posts yet.</h3>
+              <p>I’ll share project updates and notes here.</p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -143,16 +148,14 @@ export default async function HomePage() {
           <div>
             <p className="kicker">About</p>
             <h2>
-              Engineering work with a bias toward understanding the system
-              underneath.
+              I learn by building things.
             </h2>
           </div>
           <div className={styles.aboutCopy}>
             <p>
-              I am a software engineer who likes useful tools, graphics work,
-              backend systems, and projects that teach me something concrete.
-              LyteDev is the home for that work and the writing that comes with
-              it.
+              I’m a software engineer, and a lot of my personal time goes into
+              building more software. Sometimes it’s a tool I need. Other times,
+              I just want to understand how something works.
             </p>
             <Link href="/about" className="text-link">
               More about me

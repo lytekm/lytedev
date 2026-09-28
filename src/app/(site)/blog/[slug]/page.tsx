@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageViewTracker } from "@/components/site/page-view-tracker";
 import Link from "next/link";
 import Image from "next/image";
 import { Markdown } from "@/components/site/markdown";
@@ -37,6 +38,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <article className={`shell page-section ${styles.page}`}>
+      <PageViewTracker path={`/blog/${post.slug}`} />
       <Link href="/blog" className="back-link">
         {"<- Back to writing"}
       </Link>

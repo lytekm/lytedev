@@ -1,11 +1,13 @@
 export default function Loading() {
   return (
-    <main className="shell page-section">
-      <div className="card stack-md">
-        <p className="eyebrow">Loading</p>
-        <h1>Preparing LyteDev</h1>
-        <p className="muted">Fetching content and assembling the current page.</p>
+    <div className="shell page-section" role="status" aria-label="Loading page" aria-busy="true">
+      <div className="page-skeleton" aria-hidden="true">
+        <span className="page-skeleton__label" />
+        <span className="page-skeleton__heading" />
+        <span className="page-skeleton__line" />
+        <span className="page-skeleton__line" />
+        <span className="page-skeleton__content" />
       </div>
-    </main>
+    </div>
   );
 }

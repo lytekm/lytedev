@@ -9,6 +9,12 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      page_views: {
+        Row: { event_id: string; path: string; viewed_at: string };
+        Insert: { event_id: string; path: string; viewed_at?: string };
+        Update: { event_id?: string; path?: string; viewed_at?: string };
+        Relationships: [];
+      };
       admin_users: {
         Row: {
           created_at: string;
@@ -129,6 +135,14 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
+      record_page_view: {
+        Args: { p_path: string; p_event_id: string };
+        Returns: undefined;
+      };
+      get_page_view_report: {
+        Args: { p_days: number };
+        Returns: Json;
+      };
       is_admin: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;

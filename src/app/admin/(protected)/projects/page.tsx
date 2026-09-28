@@ -33,7 +33,7 @@ export default async function AdminProjectsPage({
           <div className="admin-page-head">
             <p className="eyebrow">Projects</p>
             <h1>Manage projects</h1>
-            <p className="muted">Tighten the portfolio presentation, update details quickly, and keep featured work curated from one polished view.</p>
+            <p className="muted">Update project details, choose what appears on the home page, and publish when you’re ready.</p>
           </div>
           <Link href="/admin/projects?create=1" className="button button--primary">
             New project
@@ -65,7 +65,7 @@ export default async function AdminProjectsPage({
               <p className="eyebrow">Portfolio</p>
               <h2>All projects</h2>
             </div>
-            <p className="muted">Edit entries in a modal so ordering, status, and publication decisions stay easy to scan at a glance.</p>
+            <p className="muted">Lower display-order numbers appear first. Drafts are only visible here.</p>
           </div>
 
           <div className="admin-collection">

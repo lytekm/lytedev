@@ -24,9 +24,9 @@ export default async function AdminLoginPage({
         <p className="eyebrow">Private admin</p>
         <h1>Sign in to manage LyteDev</h1>
         <p className="muted">
-          Single-owner access only. Public registration is intentionally disabled; authorized administrator accounts must be created in Supabase.
+          Use your admin account to manage projects, posts, and site analytics.
         </p>
-        {reason === "unauthorized" ? <p className="form-message form-message--error">This account is not on the administrator allow-list.</p> : null}
+        {reason === "unauthorized" ? <p className="form-message form-message--error">This account doesn’t have admin access.</p> : null}
         <Link href="/" className="button">
           Back to site
         </Link>

@@ -3,7 +3,7 @@ export const SITE_NAME = "LyteDev";
 export const SITE_URL = "https://lytedev.ca";
 
 export const SITE_DESCRIPTION =
-  "Personal software engineering portfolio and project site for Kevin Morrison, covering developer tools, applications, graphics work, experiments, and technical writing.";
+  "I’m Kevin Morrison, a software engineer. These are my apps, developer tools, graphics projects, and notes on what I’m learning.";
 
 export const GITHUB_URL = "https://github.com/lytekm";
 

@@ -14,7 +14,7 @@ export function SiteFooter() {
               <p className="site-footer__role">Kevin Morrison / Software Engineer</p>
             </div>
           </div>
-          <p className="site-footer__copy">Personal software, tools, experiments, and technical writing from LyteDev.</p>
+          <p className="site-footer__copy">Things I’m building and notes on what I’m learning.</p>
         </div>
 
         <div className="site-footer__links">

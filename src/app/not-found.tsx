@@ -6,7 +6,7 @@ export default function NotFound() {
       <div className="card stack-md">
         <p className="eyebrow">404</p>
         <h1>Page not found</h1>
-        <p className="muted">The page you requested does not exist, or the content has not been published yet.</p>
+        <p className="muted">This page may have moved, or it hasn’t been published yet.</p>
         <div className="hero__actions">
           <Link href="/" className="button button--primary">
             Home

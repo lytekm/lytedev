@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { ProjectRow } from "@/lib/supabase/database.types";
 import { StatusBadge } from "@/components/site/status-badge";
 import { cn } from "@/lib/utils";
+import { LOGO_PATH } from "@/lib/constants";
 
 function getProjectYear(project: ProjectRow) {
   return new Date(project.created_at).getFullYear();
@@ -62,12 +63,12 @@ export function ProjectCard({
       <Link href={`/projects/${project.slug}`} className="project-feature__visual">
         <span className="project-feature__grid" aria-hidden="true" />
         <Image
-          src={project.image_url ?? "/branding/lyte-logo.png"}
+          src={project.image_url ?? LOGO_PATH}
           alt={`${project.title} preview`}
           fill
           priority={priority}
-          sizes="(max-width: 1024px) 100vw, 52vw"
-          className="project-feature__image"
+          sizes="(max-width: 1024px) 100vw, (max-width: 1288px) 52vw, 650px"
+          className={cn("project-feature__image", (!project.image_url || project.image_url === LOGO_PATH) && "project-feature__image--logo")}
         />
       </Link>
     </article>

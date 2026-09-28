@@ -29,6 +29,7 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
           </Link>
 
           <nav className="main-nav" aria-label="Admin navigation">
+            <Link href="/admin">Overview</Link>
             <Link href="/admin/projects">Projects</Link>
             <Link href="/admin/posts">Blog Posts</Link>
             <Link href="/admin/media">Media</Link>
